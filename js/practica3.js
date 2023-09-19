@@ -3,6 +3,10 @@ function inicio() {
   var intervalo1;
   var intervalo2;
   var intervalo3;
+  let posicion;
+  let posicion2;
+  let contador = 0;
+
   console.log("estoy en js");
   document.getElementById("btn1").addEventListener("click", funcion1);
   document.getElementById("btn2").addEventListener("click", funcion2);
@@ -88,21 +92,41 @@ function inicio() {
   }
 
   function funcion7() {
-    let vectorCajas2 = document.getElementById("c1");
-    vectorColores2 = ["Red", "Green", "Yellow", "Orange", "Pink"];
-    let vectorCajas3 = document.getElementById("c2");
-    vectorColores3 = ["Red", "Green", "Yellow", "Orange", "Pink"];
+    let vectorCajas = document.getElementById("c1");
+    vectorColores = ["Red", "Green", "Yellow", "Orange", "Pink"];
+    let vectorCajas2 = document.getElementById("c2");
 
     intervalo3 = setInterval(cambioColores2, 500);
     function cambioColores2() {
-      for (let item2 of vectorCajas2) {
-        let posicion2 = Math.round(Math.random() * 5);
-        item2.style.backgroundColor = vectorColores[posicion2];
+      posicion = Math.round(Math.random() * 5);
+      vectorCajas.style.backgroundColor = vectorColores[posicion];
+
+      posicion2 = Math.round(Math.random() * 5);
+      vectorCajas2.style.backgroundColor = vectorColores[posicion2];
+    }
+
+    let reloj = document.getElementById("c4");
+    let segundos = 30;
+    let countdown = setInterval(cuentaAtras, 1000);
+
+    function cuentaAtras() {
+      reloj.textContent = "Tiempo restante: " + segundos;
+
+      if (segundos == 0) {
+        clearInterval(countdown);
       }
-        for (let item3 of vectorCajas3) {
-          let posicion3 = Math.round(Math.random() * 5);
-          item3.style.backgroundColor = vectorColores[posicion3];
-        }
+      segundos--;
     }
   }
+
+  function funcion8() {
+    if (posicion == posicion2) {
+      contador++;
+    } else {
+      contador--;
+    }
+    let item = document.getElementById("c3");
+    item.textContent = "La puntuación es de: " + contador;
+  }
+  function funcion9() {}
 }
