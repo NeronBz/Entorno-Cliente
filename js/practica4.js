@@ -18,27 +18,23 @@ function inicio() {
   var contadorSegundos = 30;
 
   function empezar() {
-    console.log("1");
     btnJugar.disabled = true;
     tiempo = setInterval(juego, 1000);
-    contadorSegundos=30;
   }
 
   function juego() {
-    console.log("2");
-
     let num1 = Math.round(Math.random() * 3);
     caja.style.backgroundColor = colores[num1];
     let num2 = Math.round(Math.random() * 3);
     document.getElementById("texto").textContent = nombres[num2];
-    
+
     spTiempo.textContent = "Tiempo restante: " + contadorSegundos;
-    contadorSegundos--;
 
     if (contadorSegundos <= 0) {
       clearInterval(tiempo);
-      function comprobar() {}
-      btnJugar.disabled=false;
+      caja.onclick = function comprobar() {};
+    } else {
+      contadorSegundos--;
     }
 
     caja.onclick = comprobar;
@@ -53,8 +49,10 @@ function inicio() {
   }
   function terminar() {
     puntos = 0;
-    contadorSegundos = 0;
+    contadorSegundos = 30;
     spPuntos.textContent = "Puntos: 0";
     spTiempo.textContent = "Tiempo: 30";
+    clearInterval(tiempo);
+    btnJugar.disabled = false;
   }
 }
