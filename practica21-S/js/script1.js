@@ -38,6 +38,7 @@ function inicio() {
   for (let i = 0; i < 15; i++) {
     let divs = document.createElement("div");
     divs.className = "fondo";
+    divs.setAttribute("Name", "cajasJuego");
     contenedorFlex.appendChild(divs);
   }
 
@@ -58,6 +59,9 @@ function inicio() {
       if (contadorSegundos > 0) {
         contadorSegundos--;
         cargarInfo();
+        if (contadorSegundos % 5 == 0) {
+          cargarColoresJuego();
+        }
       } else {
         limpiarDivs();
         alert("El juego ha terminado");
@@ -66,10 +70,40 @@ function inicio() {
     }
   }
 
-  function cargarInfo() {}
+  function cargarInfo() {
+    spPuntos.textContent =
+      "Puntos: " + puntos + "    -   Tiempo: " + contadorSegundos;
+  }
 
   function cargarColoresJuego() {
+    console.log("Entro en cargarColor");
     let arrayCajasJuego = document.getElementsByName("cajasJuego");
-    //tipo de for
+    //foreach
+    arrayCajasJuego.forEach(function (item, posicion) {
+      let numColorFondo = Math.floor(Math.random() * colores.length);
+      let numTextoFondo = Math.floor(Math.random() * nombres.length);
+
+      item.style.backgroundColor = colores[numColorFondo];
+      item.textContent = nombres[numTextoFondo];
+      item.onclick = comprobar;
+
+      function comprobar() {
+        if (numColorFondo == numTextoFondo) {
+          puntos++;
+          item.onclick = function () {};
+        } else {
+          puntos--;
+        }
+        cargarInfo();
+      }
+    });
+  }
+
+  function limpiarDivs() {
+    let arrayCajasJuego = document.getElementsByName("cajasJuego");
+    arrayCajasJuego.forEach(function (item, posicion) {
+      item.onclick = function () {};
+    });
+    btnJugar.disabled = false;
   }
 }
