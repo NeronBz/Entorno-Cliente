@@ -7,6 +7,8 @@ const componentes = [];
 function inicio() {
   console.log("estoy en inicio");
 
+  btnM.onclick = mover;
+
   let contenedorP = document.createElement("div");
   let contenedorTodos = document.createElement("fieldset");
   let contenedorAzul = document.createElement("fieldset");
@@ -57,5 +59,31 @@ function inicio() {
 
     componentes.push(cajaColor);
     contenedorTodos.appendChild(cajaColor);
+  }
+
+  function mover() {
+    componentes.forEach(accion);
+
+    function accion(item) {
+      console.log(item.style.backgroundColor);
+
+      switch (item.style.backgroundColor) {
+        case "green":
+          contenedorVerde.appendChild(item);
+          break;
+        case "blue":
+          contenedorAzul.appendChild(item);
+          break;
+        case "red":
+          contenedorRojo.appendChild(item);
+          break;
+        case "orange":
+          contenedorNaranja.appendChild(item);
+          break;
+
+        default:
+          break;
+      }
+    }
   }
 }
