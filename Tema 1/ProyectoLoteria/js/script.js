@@ -23,6 +23,7 @@ function inicio() {
   btnReset.onclick = reset;
 
   for (let i = 0; i < NUM_COLUMNAS; i++) {
+    console.log("entro en for columnas");
     contenedorS = document.createElement("fieldset");
     contenedorS.className = "gallery";
     let leyenda = document.createElement("legend");
@@ -33,6 +34,7 @@ function inicio() {
     let contRojos = 0;
 
     for (let x = 0; x < NUM_CAJAS; x++) {
+      console.log("entro en for cajas");
       let caja = document.createElement("div");
       caja.className = "gallery div";
       caja.textContent = x + 1;
@@ -40,7 +42,6 @@ function inicio() {
       contenedorS.appendChild(caja);
 
       caja.onclick = marcar;
-
       function marcar() {
         // if (contRojos == 6) {
         // //   vectorCajas.forEach(accion);
@@ -101,6 +102,7 @@ function inicio() {
       }
     }
   }
+  console.log(caja1);
 }
 
 function jugar() {
@@ -177,7 +179,7 @@ function jugar() {
 
 function reset() {
   let resultado = prompt(
-    "Elige la columna a resetear: - 0 todo \n - 1 columna 1 \n - 2 columna 2 \n - 3 columna 3"
+    "Elige la columna a resetear: \n - 0 todo \n - 1 columna 1 \n - 2 columna 2 \n - 3 columna 3"
   );
 
   if (resultado == 1) {
