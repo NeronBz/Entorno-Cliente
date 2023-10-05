@@ -1,11 +1,14 @@
 window.onload = inicio;
 
-const NUM_COLUMNAS = 3;
+const NUM_COLUMNAS = 6;
 const NUM_CAJAS = 50;
 const CAJAS_SORTEO = 6;
+const columnas = [];
+const vectorColumnas = [];
 let vectorCajas = [];
 let v_numeros = [];
 let contAciertos = 0;
+
 function inicio() {
   cuerpo = document.querySelector("body");
   contenedorP = document.createElement("div");
@@ -15,6 +18,7 @@ function inicio() {
   let btnJugar = document.createElement("button");
   btnJugar.textContent = "SORTEO";
   cuerpo.appendChild(btnJugar);
+  btnJugar.classList.add("disabledDiv");
   btnJugar.onclick = jugar;
 
   let btnReset = document.createElement("button");
@@ -32,6 +36,10 @@ function inicio() {
     contenedorS.appendChild(leyenda);
     contenedorP.appendChild(contenedorS);
     let contRojos = 0;
+    columnas.push(contenedorS);
+    if (i != 0) {
+      contenedorS.classList.add("disabledDiv");
+    }
 
     for (let x = 0; x < NUM_CAJAS; x++) {
       console.log("entro en for cajas");
@@ -43,70 +51,40 @@ function inicio() {
 
       caja.onclick = marcar;
       function marcar() {
-        // if (contRojos == 6) {
-        // //   vectorCajas.forEach(accion);
-
-        // //   function accion(item, index) {
-        // //     if (item.style.backgroundColor == "red") {
-        // //       console.log(item.textContent);
-        // //       item.style.backgroundColor = "green";
-        // //       v_numeros.slice(contRojos,1);
-        // //     }
-        //  // }
-        // } else {
-        //     vectorCajas.push(caja);
-        //     console.log("Soy X "+x);
-        //     v_numeros.push(x+1);
-        //   caja.style.backgroundColor = "red";
-        //   contRojos++;
-        // }
         if (v_numeros.length < 6 && !v_numeros.includes(x + 1)) {
           console.log("Entro en marcar");
           vectorCajas.push(caja);
           console.log("Soy X " + (x + 1));
           v_numeros.push(x + 1);
           caja.style.backgroundColor = "red";
-          // caja.onclick = desmarcar;
           contRojos++;
-        }
-      }
-
-      function desmarcar() {
-        console.log("Entro en desmarcar");
-
-        // vectorCajas.forEach(accion);
-
-        // function accion(item, index) {
-        //   console.log("Entro en desmarcar bucle");
-        //   if (item.style.backgroundColor == "red") {
-        //     console.log("ITEM " + item.textContent);
-        //     item.style.backgroundColor = "green";
-        //     let n = parseInt(item.textContent);
-        //     let posicion = v_numeros.indexOf(n);
-        //     console.log("Posicion: " + posicion);
-        //     v_numeros.slice(posicion, 1);
-        //     contRojos--;
-        //     caja.onclick = marcar;
-        //   }
-        // }
-        if (caja.style.backgroundColor == "red") {
-          console.log("ITEM " + caja.textContent);
+          if (contRojos == 6) {
+            vectorColumnas.push(v_numeros);
+            columnas[i].classList.add("disabledDiv");
+            v_numeros = [];
+            contRojos = 0;
+            if (i == NUM_COLUMNAS - 1) {
+              console.log("entro en poner boton");
+              btnJugar.classList.remove("disabledDiv");
+              btnReset.classList.add("disabledDiv");
+            } else {
+              columnas[i + 1].classList.remove("disabledDiv");
+            }
+          }
+        } else {
+          console.log("Entro en desmarcar");
+          let number = parseInt(caja.textContent);
           caja.style.backgroundColor = "green";
-          let n = parseInt(caja.textContent);
-          let posicion = v_numeros.indexOf(n);
-          console.log("Posicion: " + posicion);
-          v_numeros.splice(posicion, 1);
+          let position = v_numeros.indexOf(number);
+          v_numeros.splice(position, 1);
           contRojos--;
         }
-        caja.onclick = marcar;
       }
     }
   }
-  console.log(caja1);
 }
 
 function jugar() {
-  //btnJugar.disabled = true;
   let contenedorSorteo = document.createElement("div");
   contenedorSorteo.className = "gallery2";
   cuerpo.appendChild(contenedorSorteo);
@@ -131,15 +109,17 @@ function jugar() {
   resultado.className = "gallery2 div";
   resultado.style.backgroundColor = "rgb(0,160,0)";
   contenedorSorteo.appendChild(resultado);
-  console.log(v_numeros);
   console.log(vectorN);
+
   for (let i = 0; i < 6; i++) {
     for (let j = 0; j < 6; j++) {
-      if (v_numeros[i] == vectorN[j]) {
+      if (vectorColumnas[i][j] == vectorN[j]) {
         contAciertos++;
       }
     }
   }
+  resultado.textContent = contAciertos;
+
   //   function recorrido(item, index) {
 
   //     vectorN.forEach(accion2);
@@ -156,7 +136,6 @@ function jugar() {
   //     }
 
   //   }
-  resultado.textContent = contAciertos;
 
   // --------------------------
 
@@ -164,30 +143,36 @@ function jugar() {
   contenedorBombo.className = "gallery2";
   cuerpo.appendChild(contenedorBombo);
 
-  for (let i = 0; i < v_numeros.length; i++) {
-    let box = document.createElement("div");
-    box.className = "gallery2 div";
-    box.textContent = v_numeros[i];
-    box.style.backgroundColor = "yellow";
-    contenedorBombo.appendChild(box);
+  for (let i = 0; i < vectorColumnas.length; i++) {
+    for (let j = 0; j < vectorColumnas[0].length; j++) {
+      console.log(vectorColumnas);
+      let box = document.createElement("div");
+      box.className = "gallery2 div";
+      box.textContent = vectorColumnas[i][j];
+      box.style.backgroundColor = "yellow";
+      contenedorBombo.appendChild(box);
 
-    if (vectorN.includes(v_numeros[i])) {
-      box.style.backgroundColor = "red";
+      if (vectorN.includes(vectorColumnas[i][j])) {
+        box.style.backgroundColor = "red";
+      }
     }
+    let boxGanadora = document.createElement("div");
+    boxGanadora.className = "gallery2 div";
+    boxGanadora.textContent = vectorN[vectorColumnas[i]];
+    boxGanadora.style.backgroundColor = "green";
+    contenedorBombo.appendChild(boxGanadora);
   }
 }
 
 function reset() {
-  let resultado = prompt(
-    "Elige la columna a resetear: \n - 0 todo \n - 1 columna 1 \n - 2 columna 2 \n - 3 columna 3"
-  );
+  vectorCajas.forEach(accion1);
 
-  if (resultado == 1) {
-    vectorCajas.forEach(accion1);
-
-    function accion1(item, index) {
-      item.style.backgroundColor = "green";
-    }
-    v_numeros = [];
+  function accion1(item, index) {
+    item.style.backgroundColor = "green";
   }
+  columnas = [];
+  vectorCajas = [];
+  vectorColumnas = [];
+  v_numeros = [];
+  inicio();
 }
