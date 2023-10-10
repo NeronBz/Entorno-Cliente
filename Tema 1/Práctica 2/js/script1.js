@@ -1,59 +1,57 @@
-console.log("entro en javascript")
+window.addEventListener("load", inicio);
+let intentos = 0;
+function inicio() {
+  const vectorColores = ["Yellow", "Pink", "Orange", "Purple"];
+  console.log("entro en js");
+  let nota1 = Math.round(Math.random() * 100);
+  console.log(nota1);
+  let nota2 = Math.round(Math.random() * 100);
+  console.log(nota2);
 
-//la función inicio es llamada por el objeto Window (la ventana del navegador)
-//cuando termine de cargar (load) todo el DOM HTML
-//Funciones útiles de Windows: alert, prompt, confirm
-//window.addEventListener("load", inicio);
-window.onload=inicio;
-function inicio(){
- alert("estoy en la función inicio");
+  const dias = document.getElementsByTagName("li");
+  const lista = document.getElementsByTagName("ul");
+  for (let item of dias) {
+    item.textContent = Math.round(Math.random() * 1000);
+    item.style.color = "Red";
+  }
+  document.getElementById("btn1").addEventListener("click", accion1);
+  document.getElementById("btn2").addEventListener("click", accion2);
+  document.getElementById("btn3").addEventListener("click", accion3);
+  document.getElementById("btn4").addEventListener("click", accion4);
 
- //prompt("teclea tu nombre", "");
- //se guarda en una variable en js el valor completo del objeto cuyo id es "etiqueta1"
- function cargarAleatorio(){
- let primeraEtiqueta=document.getElementById("etiqueta1");
- let segundaEtiqueta=document.getElementById("etiqueta2");
- primeraEtiqueta.textContent=Math.round(Math.random()*100);
- segundaEtiqueta.textContent=Math.round(Math.random()*100);
- }
-
- //identificar el objeto de tipo button cuyo id es btn1 y lo guardamos en la variable recargar
- let recargar=document.getElementById("btn1");
- //generar un evento de tipo "click" simple sobre el button de id=btn1
- recargar.addEventListener("click", accion1);
- function accion1(){
-    console.log("recargando los random");
-    cargarAleatorio();
- }
-
- //otra forma de cargar eventos
- let boton2=document.getElementById("btn2");
- boton2.onclick=accion2;
-
- //generar un array de componentes html
- const listaElementosli=document.getElementsByTagName("li");
- console.log(listaElementosli);
- function accion2(){
-    console.log("entro en el segundo evento");
-    for(let item of listaElementosli){
-        item.textContent=Math.round(Math.random()*100);
+  function accion1() {
+    for (let item of dias) {
+      item.textContent = Math.round(Math.random() * 1000);
+      item.style.color = "Red";
     }
- }
-
- let boton3=document.getElementById("btn3");
- boton3.onclick=accion3;
-
- function accion3(){
-    console.log("entro en accion3")
-    for(let item of listaElementosli){
-        let numero=Math.round(Math.random()*1000);
-        item.textContent=numero;
-        if(numero>500){
-            item.style.color="Red";
-        }else{
-            item.style.color="Blue";
-        }
+  }
+  function accion2() {
+    for (let item of dias) {
+      let num = Math.round(Math.random() * 1000);
+      item.textContent = num;
+      if (num > 500) {
+        item.style.color = "Blue";
+      } else {
+        item.style.color = "Green";
+      }
     }
- }
-
+  }
+  function accion3() {
+    for (let item of dias) {
+      let colorX = Math.round(Math.random() * 4);
+      item.style.color = vectorColores[colorX];
+    }
+  }
+  function accion4() {
+    intentos++;
+    let nota1 = Math.round(Math.random() * 10);
+    console.log(nota1);
+    let nota2 = Math.round(Math.random() * 10);
+    console.log(nota2);
+    document.getElementById("etiqueta1").innerText = nota1;
+    document.getElementById("etiqueta2").innerText = nota2;
+    if (nota1 == nota2) {
+      alert("Iguales: " + intentos);
+    }
+  }
 }
