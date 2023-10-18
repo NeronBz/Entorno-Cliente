@@ -58,7 +58,7 @@ function validacion2(texto, sm) {
   }
   let longitud = String(texto).length;
   if (longitud <= 3 || longitud >= 15) {
-    sm.innerHTML = "* La cadena no puee tener esa cantidad caracteres (3-15).";
+    sm.innerHTML = "* La cadena no puede tener esa cantidad caracteres (3-15).";
     bool = false;
   }
 }
