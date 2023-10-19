@@ -63,9 +63,12 @@ function validacion2(texto, sm) {
   }
 }
 
-function validacion3(texto, sm) {
-  if (texto == "") {
+function validacion3(num, sm) {
+  if (num == "") {
     sm.innerHTML = "* Campo obligatorio.";
+    bool = false;
+  } else if (num < -10 || num > 10) {
+    sm.innerHTML = "* Número fuera del rango (-10 a 10).";
     bool = false;
   }
 }
@@ -74,5 +77,59 @@ function validacion4(texto, sm) {
   if (texto == "") {
     sm.innerHTML = "* Campo obligatorio.";
     bool = false;
+  } else {
+    let i = 0;
+    let tieneA = false;
+    let tieneE = false;
+    let tieneO = false;
+    let tieneB = false;
+    let contB = 0;
+    while (i < texto.length) {
+      console.log("entro en el while");
+      texto.toLowerCase();
+      let caracter = texto.charAt(i);
+      if (caracter == "a") {
+        console.log("tengo una a");
+        tieneA = true;
+      }
+      if (caracter == "e") {
+        console.log("tengo una e");
+        tieneE = true;
+      }
+      if (caracter == "o") {
+        console.log("tengo una o");
+        tieneO = true;
+      }
+      if (caracter == "b") {
+        tieneB = true;
+        contB++;
+      }
+      i++;
+    }
+    if (tieneA && tieneE && tieneO) {
+      sm.innerHTML = "";
+    } else if (tieneA && !tieneE && !tieneO) {
+      sm.innerHTML = "* A la cadena le falta la letra E y la letra O";
+      bool = false;
+    } else if (tieneA && tieneE && !tieneO) {
+      sm.innerHTML = "* A la cadena le falta la letra O";
+      bool = false;
+    } else if (!tieneA && tieneE && tieneO) {
+      sm.innerHTML = "* A la cadena le falta la letra A";
+      bool = false;
+    } else if (!tieneA && !tieneE && tieneO) {
+      sm.innerHTML = "* A la cadena le falta la letra A y la letra E";
+      bool = false;
+    } else if (tieneA && !tieneE && tieneO) {
+      sm.innerHTML = "* A la cadena le falta la letra E";
+      bool = false;
+    } else if (!tieneA && tieneE && !tieneO) {
+      sm.innerHTML = "* A la cadena le falta la letra A y la letra O";
+      bool = false;
+    } else {
+      sm.innerHTML =
+        "* A la cadena le falta la letra A, la letra E y la letra O";
+      bool = false;
+    }
   }
 }

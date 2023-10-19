@@ -63,13 +63,20 @@ function validacion2(texto, sm) {
         if (!isNaN(caracter * 1)) {
           esNum = true;
         }
-        if (caracter === caracter.toUpperCase()) {
+        if (
+          caracter === caracter.toUpperCase() &&
+          caracter !== caracter.toLowerCase()
+        ) {
           esMayus = true;
         }
         i++;
       }
       if (esNum && esMayus) {
         sm.innerHTML = "";
+      } else if (!esNum && esMayus) {
+        sm.innerHTML = "Falta un número";
+      } else if (esNum && !esMayus) {
+        sm.innerHTML = "Falta una mayúscula";
       } else {
         sm.innerHTML =
           "* La cadena debe tener al menos una letra mayúscula y un número";
