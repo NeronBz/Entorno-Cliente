@@ -13,6 +13,16 @@ document.getElementById("cargar").addEventListener("submit", function (event) {
   }
   var curso = document.getElementById("selectCurso").value;
   var nombre = document.getElementById("nombre").value;
+  var sElement = document.getElementById("exampleFormControlSelect2");
+  var sOptions = sElement.sOptions;
+  var example = "";
+  for (var i = 0; i < sOptions.length; i++) {
+    if (i > 0) {
+      example += ", ";
+    }
+    example += sOptions[i].value;
+  }
+  var txtArea = document.getElementById("exampleFormControlTextarea1").value;
 
   // Muestra los datos en un alert
   var mensaje =
@@ -26,7 +36,14 @@ document.getElementById("cargar").addEventListener("submit", function (event) {
     curso +
     "\n" +
     "Nombre: " +
-    nombre;
+    nombre +
+    "\n" +
+    "Example1: " +
+    example +
+    "\n" +
+    "Textarea: " +
+    txtArea +
+    "\n";
 
   alert(mensaje);
 });
