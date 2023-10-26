@@ -1,49 +1,79 @@
-document.getElementById("cargar").addEventListener("submit", function (event) {
-  event.preventDefault(); // Evita la recarga de la página
+window.onload = inicio;
 
-  // Recopila los datos del formulario
-  var ciclo = document.querySelector('input[name="radio"]:checked').value;
-  var mElementos = document.querySelectorAll('input[name="modulos"]:checked');
-  var modulos = "";
-  for (var i = 0; i < mElementos.length; i++) {
-    if (i > 0) {
-      modulos += ", ";
-    }
-    modulos += mElementos[i].value;
-  }
-  var curso = document.getElementById("selectCurso").value;
-  var nombre = document.getElementById("nombre").value;
-  var sElement = document.getElementById("exampleFormControlSelect2");
-  var sOptions = sElement.sOptions;
-  var example = "";
-  for (var i = 0; i < sOptions.length; i++) {
-    if (i > 0) {
-      example += ", ";
-    }
-    example += sOptions[i].value;
-  }
-  var txtArea = document.getElementById("exampleFormControlTextarea1").value;
+let bool = true;
 
-  // Muestra los datos en un alert
-  var mensaje =
+let ciclo = document.querySelector("input[name=radio]").value;
+let modulos = document.querySelectorAll("input[name=modulos]");
+
+let marcados = [];
+
+let nomb = document.getElementById("nombre").value;
+let curso = document.getElementById("selectCurso").value;
+let horas = document.querySelectorAll("select[name=multipleselect]");
+console.log(horas);
+let horasMarcadas = [];
+let comentario = document.getElementById("exampleFormControlTextarea1").value;
+
+function inicio() {
+  console.log("entro en inicio");
+  let btnAceptar = document.getElementById("aceptar");
+  btnAceptar.onclick = obtenerDatos;
+
+  let accion = document.getElementById("cargar");
+
+  accion.onsubmit = function () {
+    let smCi = document.getElementById("smCiclo");
+    let smMo = document.getElementById("smModulos");
+    let smCu = document.getElementById("smCurso");
+    let smNo = document.getElementById("smNombre");
+    let smHo = document.getElementById("smHoras");
+
+    if (
+      ciclo == "" ||
+      modulos == "" ||
+      curso == "" ||
+      nomb == "" ||
+      horas == ""
+    ) {
+      bool = false;
+      smCi.innerHTML = "*Campo Obligatorio";
+      smMo.innerHTML = "*Campo Obligatorio";
+      smCu.innerHTML = "*Campo Obligatorio";
+      smNo.innerHTML = "*Campo Obligatorio";
+      smHo.innerHTML = "*Campo Obligatorio";
+    }
+    return bool;
+  };
+}
+
+function obtenerDatos() {
+  console.log("entro en obtenerDatos");
+
+  modulos.forEach(obtenerMarcados);
+
+  function obtenerMarcados(item, index) {
+    if (item.checked) {
+      marcados.push(item.value);
+    }
+  }
+
+  for (let index = 0; index < horas[0].length; index++) {
+    if (horas[0][index].selected) {
+      horasMarcadas.push(horas[0][index].value);
+    }
+  }
+
+  let mensaje =
     "Ciclo: " +
     ciclo +
-    "\n" +
-    "Módulos: " +
-    modulos +
-    "\n" +
-    "Curso: " +
+    "\nModulos: " +
+    marcados +
+    "\nNombre: " +
+    nomb +
+    "\nCurso: " +
     curso +
-    "\n" +
-    "Nombre: " +
-    nombre +
-    "\n" +
-    "Example1: " +
-    example +
-    "\n" +
-    "Textarea: " +
-    txtArea +
-    "\n";
-
-  alert(mensaje);
-});
+    "\nHoras asistidas: " +
+    horasMarcadas +
+    "\nComentario: " +
+    comentario;
+}
