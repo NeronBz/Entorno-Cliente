@@ -21,19 +21,16 @@ function mostrar() {
 
       var objeto = JSON.parse(this.responseText);
       let idFila = document.querySelector("#fila");
-      objeto.forEach(recorrer);
-      function recorrer(item, index) {
-        console.log(item.url);
-        let divX = document.createElement("div");
-        divX.innerHTML = "";
-        divX.className = "col-lg-3";
-        divX.innerHTML =
-          "<video src='" +
-          item.url +
-          "' width='200' height='100'" +
-          "autoplay loop> </video>";
-        idFila.appendChild(divX);
-      }
+      let divX = document.createElement("div");
+      let nRandom = Math.floor(Math.random() * 7);
+      idFila.innerHTML = "";
+      divX.className = "col-lg-3";
+      divX.innerHTML =
+        "<video src='" +
+        objeto[nRandom].url +
+        "' width='200' height='100'" +
+        "autoplay loop> </video>";
+      idFila.appendChild(divX);
     }
   }
   /* .open: especifica la solicitud
