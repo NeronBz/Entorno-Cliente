@@ -22,6 +22,7 @@ function mostrar() {
       var objeto = JSON.parse(this.responseText);
       let idFila = document.querySelector("#fila");
       let divX = document.createElement("div");
+      let sp1 = document.createElement("span");
       let nRandom = Math.floor(Math.random() * 7);
       idFila.innerHTML = "";
       divX.className = "col-lg-3";
@@ -30,6 +31,8 @@ function mostrar() {
         objeto[nRandom].url +
         "' width='200' height='100'" +
         "autoplay loop> </video>";
+      sp1.innerHTML = objeto[nRandom].id;
+      idFila.appendChild(sp1);
       idFila.appendChild(divX);
     }
   }
@@ -38,7 +41,7 @@ function mostrar() {
              - Archivo: txt, php, xml, json, etc.
              - true/false: método de envío. */
 
-  xhr.open("GET", "http://camacho.atwebpages.com/webcam/getWebcam.php", true);
+  xhr.open("GET", "../getWebcam.json", true);
 
   /* .send: envía la solicitud al servidor.
        Si utilizamos POST debemos pasar los datos por parámetro */
