@@ -34,10 +34,11 @@ function inicio() {
 
         let precio = document.createElement("p");
         precio.classList.add("price");
-        precio.textContent = objeto[i].precio;
+        precio.textContent = objeto[i].precio + "€";
 
         contenedor.appendChild(divX);
-        divX.appendChild(imagen);
+        divX.appendChild(tagA);
+        tagA.appendChild(imagen);
         divX.appendChild(nombre);
         divX.appendChild(ingredientes);
         divX.appendChild(precio);
