@@ -9,7 +9,7 @@ function inicio() {
       //Cogemos la lista y el div contenedor del DOM
       let contenedorIndices = document.querySelector(".carousel-indicators");
       let contenedorImagenes = document.querySelector(".carousel-inner");
-      let contenedorCar = document.getElementsByClassName("row mt-5");
+      let contenedorCar = document.querySelector("#cajon");
       //Al hacer parse nos devuelve un objeto
       var arrayJson = JSON.parse(this.responseText);
       var nItems = String(arrayJson).length / 4;
@@ -81,7 +81,7 @@ function inicio() {
         spanDireccion.innerHTML = fotoCamacho.spanDireccion;
         textoDireccion.appendChild(spanDireccion);
 
-        contenedorCar[posicion].appendChild(columna4);
+        contenedorCar.appendChild(columna4);
       });
     }
   };
