@@ -9,6 +9,7 @@ function inicio() {
       //Cogemos la lista y el div contenedor del DOM
       let contenedorIndices = document.querySelector(".carousel-indicators");
       let contenedorImagenes = document.querySelector(".carousel-inner");
+      let contenedorCar = document.getElementsByClassName("row mt-5");
       //Al hacer parse nos devuelve un objeto
       var arrayJson = JSON.parse(this.responseText);
       var nItems = String(arrayJson).length / 4;
@@ -62,41 +63,25 @@ function inicio() {
         equipo.className = "equipo";
 
         let equipo_foto = document.createElement("div");
-        equipo_foto.className("equipo_foto");
+        equipo_foto.className = "equipo_foto";
         columna4.appendChild(equipo);
         equipo.appendChild(equipo_foto);
 
         let imagen = document.createElement("img");
-        imagen.setAttribute("src", fotoCamacho.imagen)
+        imagen.setAttribute("src", fotoCamacho.imagen);
         equipo_foto.appendChild(imagen);
 
-        let nombreEmpleado=document.createElement("h3");
-        nombreEmpleado.innerHTML=fotoCamacho.nombre;
+        let nombreEmpleado = document.createElement("h3");
+        nombreEmpleado.innerHTML = fotoCamacho.nombre;
         equipo.appendChild(nombreEmpleado);
 
-        let text
+        let textoDireccion = document.createElement("div");
+        textoDireccion.className = "equipo_texto";
+        let spanDireccion = document.createElement("span");
+        spanDireccion.innerHTML = fotoCamacho.spanDireccion;
+        textoDireccion.appendChild(spanDireccion);
 
-        // <div class="col-lg-4">
-
-        // <div class="equipo">
-
-        // <div class="equipo_foto">
-        // <img src="https://randomuser.me/api/portraits/women/17.jpg" class="img-fluid" />
-        // <h3>Lola</h3>
-        // <p>Web Designer</p>
-        // </div>
-
-        // <div class="equipo_texto">
-        // <span>
-        // Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-        // natoque penatibus et magnis dis parturient montes,
-        // Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-        // natoque.
-        // </span>
-        // </div>
-
-        // </div>
-        // </div>
+        contenedorCar[posicion].appendChild(columna4);
       });
     }
   };
