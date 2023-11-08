@@ -76,8 +76,8 @@ function eliminarCiudades() {
   if (eliminacionC == id) {
     console.log("entro en eliminar Ciudades");
     $.ajax({
-      url: "http://moralo.atwebpages.com/menuAjax/ciudades/insertarCiudades.php",
-      type: "POST",
+      url: "http://moralo.atwebpages.com/menuAjax/ciudades/eliminarCiudades.php",
+      type: "GET",
       data: {
         id: "",
         nombre: "",
