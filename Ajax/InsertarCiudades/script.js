@@ -3,6 +3,9 @@ function inicio() {
   document
     .getElementById("btnInsertar")
     .addEventListener("click", insertarCiudades);
+  document
+    .getElementById("btnEliminar")
+    .addEventListener("click", eliminarCiudades);
 }
 function insertarCiudades() {
   console.log("entro en insertar Ciudades");
@@ -27,7 +30,9 @@ function insertarCiudades() {
 }
 function mostrar() {
   var cajaMostrarContenido = document.querySelector("#mostrarCiudades");
+  cajaMostrarContenido.innerHTML = "";
   var bloqueHtml = document.createElement("div");
+  bloqueHtml.innerHTML = "";
   var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = cargar;
 
@@ -62,4 +67,24 @@ function mostrar() {
     "http://moralo.atwebpages.com/menuAjax/ciudades/getCiudades.php"
   );
   xhr.send();
+}
+function eliminarCiudades() {
+  var eliminacionC = prompt("¿Qué ciudad quieres eliminar?");
+  var id = document.querySelector("#_id").value;
+  alert(eliminacionC);
+
+  if (eliminacionC == id) {
+    console.log("entro en eliminar Ciudades");
+    $.ajax({
+      url: "http://moralo.atwebpages.com/menuAjax/ciudades/insertarCiudades.php",
+      type: "POST",
+      data: {
+        id: "",
+        nombre: "",
+        poblacion: "",
+        densidad: "",
+        superficie: "",
+      },
+    });
+  }
 }
