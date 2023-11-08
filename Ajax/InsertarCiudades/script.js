@@ -70,21 +70,35 @@ function mostrar() {
 }
 function eliminarCiudades() {
   var eliminacionC = prompt("¿Qué ciudad quieres eliminar?");
-  var id = document.querySelector("#_id").value;
   alert(eliminacionC);
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = cargar;
 
-  if (eliminacionC == id) {
-    console.log("entro en eliminar Ciudades");
-    $.ajax({
-      url: "http://moralo.atwebpages.com/menuAjax/ciudades/eliminarCiudades.php",
-      type: "GET",
-      data: {
-        id: "",
-        nombre: "",
-        poblacion: "",
-        densidad: "",
-        superficie: "",
-      },
-    });
+  function cargar() {
+    if (this.readyState == 4 && this.status == 200) {
+      var objeto = JSON.parse(this.responseText);
+      objeto.forEach(recorrer);
+      function recorrer(datos, index) {
+        if (eliminacionC !== null && eliminacionC == datos.id) {
+          console.log("entro en eliminar Ciudades");
+          $.ajax({
+            url: "http://moralo.atwebpages.com/menuAjax/ciudades/eliminarCiudades.php",
+            type: "POST",
+            data: {
+              id: "",
+              nombre: "",
+              poblacion: "",
+              densidad: "",
+              superficie: "",
+            },
+          });
+        }
+      }
+    }
   }
+  xhr.open(
+    "POST",
+    "http://moralo.atwebpages.com/menuAjax/ciudades/getCiudades.php"
+  );
+  xhr.send();
 }
