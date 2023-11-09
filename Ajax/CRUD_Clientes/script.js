@@ -22,22 +22,20 @@ function cargarTabla() {
       var objeto = JSON.parse(this.responseText);
       objeto.forEach(recorrer);
       function recorrer(datos, index) {
-        "<div class='row'>" +
-          "<div class='col-lg-2' text-center>" +
-          datos.id +
+        bloqueHtml.innerHTML +=
+          "<div class='row'>" +
+          "<div class='col-lg-2 text-center'>" +
+          datos.dni +
           "</div>" +
           "<div class='col-lg-2 text-center'>" +
           datos.nombre +
           "</div>" +
           "<div class='col-lg-2 text-center'>" +
-          datos.poblacion +
+          datos.apellido +
           "</div>" +
           "<div class='col-lg-2 text-center'>" +
-          datos.densidad +
-          "</div>" +
-          "<div class='col-lg-2 text-center'>" +
-          datos.extension +
-          "</div></div";
+          datos.telefono +
+          "</div>";
       }
     }
   }
