@@ -20,24 +20,27 @@
   <body>
     <div class="container">
       <div class="row d-flex justify-content-center">
-        <div class="col-lg-6">
-          <h1>CRUD CLIENTES</h1>
-          <!-- Button trigger modal -->
-          <!-- Formulario modal -->
+        <div class="col-lg-10">
+          <h1 style="margin-top: 10px">Gestión CRUD Clientes</h1>
+          <!-- Boton modal insertar -->
           <button
             type="button"
-            id="btnAdd"
+            id="botonAdd"
             class="btn btn-primary"
             data-toggle="modal"
-            data-target="#formClientesModal"
+            data-target="#clienteModal"
           >
-            Nuevo Usuario
+            Añadir cliente
+          </button>
+          <!-- Boton mostrar -->
+          <button type="button" id="btnMostrar" class="btn btn-secondary">
+            Mostrar
           </button>
 
-          <!-- Modal -->
+          <!-- Modal de insertar y modificar-->
           <div
             class="modal fade"
-            id="formClientesModal"
+            id="clienteModal"
             tabindex="-1"
             role="dialog"
             aria-labelledby="exampleModalLabel"
@@ -47,51 +50,62 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">
-                    Datos Clientes
+                    Insertar datos clientes
                   </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
                 <div class="modal-body">
                   <div class="form-group">
-                    <label for="txtDni">Teclea DNI</label>
+                    <label for="Dni">DNI</label>
                     <input
                       type="text"
                       name="dni"
-                      id="txtDni"
+                      id="Dni"
                       class="form-control"
-                      placeholder="Teclea Dni"
+                      placeholder="DNI"
                       aria-describedby="helpId"
                     />
                   </div>
+
                   <div class="form-group">
-                    <label for="txtNombre">Teclea NOMBRE</label>
+                    <label for="Nombre">Nombre</label>
                     <input
                       type="text"
                       name="nombre"
-                      id="txtNombre"
+                      id="Nombre"
                       class="form-control"
-                      placeholder="Teclea Nombre"
+                      placeholder="Nombre"
                       aria-describedby="helpId"
                     />
                   </div>
+
                   <div class="form-group">
-                    <label for="">Teclea APELLIDOS</label>
+                    <label for="Apellidos">Apellidos</label>
                     <input
                       type="text"
-                      name="apellidos"
-                      id="txtApellidos"
+                      name="apellido"
+                      id="Apellidos"
                       class="form-control"
-                      placeholder="Teclea Apellidos"
+                      placeholder="Apellidos"
                       aria-describedby="helpId"
                     />
                   </div>
+
                   <div class="form-group">
-                    <label for="">Teclea TELEFONO</label>
+                    <label for="Telefono">Telefono</label>
                     <input
-                      type="text"
+                      type="txt"
                       name="telefono"
-                      id="txtTelefono"
+                      id="Telefono"
                       class="form-control"
-                      placeholder="Teclea Telefono"
+                      placeholder="Telefono"
                       aria-describedby="helpId"
                     />
                   </div>
@@ -99,6 +113,7 @@
                 <div class="modal-footer">
                   <button
                     type="button"
+                    id="btnInsertar"
                     name="insertar"
                     class="btn btn-primary"
                     data-dismiss="modal"
@@ -107,17 +122,18 @@
                   </button>
                   <button
                     type="button"
+                    id="btnModificar"
                     name="modificar"
-                    class="btn btn-info"
+                    class="btn btn-success"
                     data-dismiss="modal"
-                    disabled="true"
+                    disabled="cancel"
                   >
                     Modificar
                   </button>
                   <button
                     type="button"
                     name="cerrar"
-                    class="btn btn-secondary"
+                    class="btn btn-danger"
                     data-dismiss="modal"
                   >
                     Cerrar
@@ -126,12 +142,60 @@
               </div>
             </div>
           </div>
+          <br /><br />
+          <table class="table table-striped" id="cajaTabla"></table>
+
+          <!-- Modal de borrar-->
+          <div
+            class="modal fade"
+            id="modalBorrar"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Borrar Cliente
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body" id="borrarBody"></div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    id="borrarCliente"
+                    class="btn btn-danger"
+                    data-dismiss="modal"
+                  >
+                    Borrar
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="table table-responsive table-bordered" id="cajaTabla"></div>
       </div>
     </div>
 
     <!-- Optional JavaScript -->
+    <script src="script.js"></script>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script
@@ -139,6 +203,5 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
-    <script src="script.js"></script>
   </body>
 </html>
