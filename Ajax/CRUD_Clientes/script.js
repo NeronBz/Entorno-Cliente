@@ -1,12 +1,16 @@
 window.onload = inicio;
 var tabla = document.querySelector("#cajaTabla");
 var bloqueHtml = document.createElement("div");
+
 function inicio() {
+  let elemento = document.querySelector("#btnInsertar");
+  elemento.addEventListener("click", insertarUsuario);
+
   cargarTabla();
-  let btn = document.querySelector("#btnAdd");
-  btn.addEventListener("click", modal);
 }
 function cargarTabla() {
+  console.log("entro en cargarTabla");
+
   bloqueHtml.innerHTML =
     "<div class='row'>" +
     "<div class='col-lg-2 text-center' >DNI</div>" +
@@ -16,107 +20,139 @@ function cargarTabla() {
     "<div class='col-lg-2 text-center' >ELIMINAR</div>" +
     "<div class='col-lg-2 text-center' >MODIFICAR</div></div>";
   var xhr = new XMLHttpRequest();
-  xhr.onreadystatechange = cargar;
-  function cargar() {
+  xhr.onreadystatechange = function () {
+    //CONTROL DE ESTADO DE LA PETICIÓN DE DATOS Y DEL ESTADO DEL SERVIDOR
     if (this.readyState == 4 && this.status == 200) {
+      //he accedido al fichero de datos y está abierto el servidor
+      //tengo que averiguar en qué formato me llegan los datos para hacer el parseo
       var objeto = JSON.parse(this.responseText);
+
       objeto.forEach(recorrer);
-      function recorrer(datos, index) {
-        let vector = [datos.dni, datos.nombre, datos.apellido, datos.telefono];
+
+      function recorrer(clientes, index) {
+        console.log("vector" + clientes.dni);
+        let vector = [
+          clientes.dni,
+          clientes.nombre,
+          clientes.apellido,
+          clientes.telefono,
+        ];
         bloqueHtml.innerHTML +=
-          "<div class='row'>" +
-          "<div class='col-lg-2 text-center' >" +
-          datos.dni +
+          "<div class='row'> " +
+          "<div class='col-lg-2 text-center'>" +
+          clientes.dni +
           "</div>" +
-          "<div class='col-lg-2 text-center' >" +
-          datos.nombre +
+          "<div class='col-lg-2 text-center'>" +
+          clientes.nombre +
           "</div>" +
-          "<div class='col-lg-2 text-center' >" +
-          datos.apellido +
+          "<div class='col-lg-2 text-center'>" +
+          clientes.apellido +
           "</div>" +
-          "<div class='col-lg-2 text-center' >" +
-          datos.telefono +
+          "<div class='col-lg-2 text-center'>" +
+          clientes.telefono +
           "</div>" +
-          //Simular botón con a href, añado clase btn btn-danger(color rojo)
-          "<div class='col-lg-2 text-center' ><a class='btn btn-danger btn-md'" +
-          //anulo el href, no hay link, pero sí hay evento onclick
-          //con parámetro incluido: dni de esa tupla
-          "href=' javascript:void(0)' onclick=eliminar('" +
-          datos.dni +
+          //simular botón con a href añado clase btn btn-danger (color rojo)
+          "<div class='col-lg-2 text-center mb-2'><a class='btn btn-danger btn-md'" +
+          //anulo el href, no hay link , pero sí hay evento onclick con
+          //parámetro incluido: dni de esa tupla
+          " href='javascript:void(0)' onclick=eliminar('" +
+          clientes.dni +
           "')>" +
           //texto del botón e icono
-          "Eliminar<span class='glyphicon glyphicon-trash'></span></a></div>" +
+          "ELIMINAR<i class='bi-trash'></i></a></div> " +
           //td del modificar
-          "<div class='col-lg-2 text-center' ><a class='btn btn-info btn-md' " +
+          "<div class='col-lg-2 text-center'><a class='btn btn-info btn-md' " +
           "href='javascript:void(0)' onclick=modificar('" +
-          vector.join("', '") +
-          "')</div>" +
-          "Modificar<span class='glyphicon glyphicon-pencil'></span></a></div></div>";
+          vector +
+          "')>" +
+          "MODIFICAR<i class='bi bi-arrow-clockwise'></i></a></div>";
       }
     }
-  }
+  };
+  //PRIMERO HAY QUE HACER LA PETICIÓN
   xhr.open(
     "GET",
-    "http://moralo.atwebpages.com/menuAjax/clientes/getClientes.php",
+    " http://moralo.atwebpages.com/menuAjax/clientes/getClientes.php",
     true
   );
   xhr.send();
+
   tabla.appendChild(bloqueHtml);
 }
-function modal() {
-  let btnInsertar = document.querySelector('button[name="insertar"]');
-  btnInsertar.addEventListener("click", insertar);
-  let btnModificar = document.querySelector(".btn-info");
-  btnModificar.addEventListener("click", modificar);
-}
-function insertar() {
-  console.log("entro en insertar clientes");
-  var dni = document.querySelector("#txtDni").value;
-  var nombre = document.querySelector("#txtNombre").value;
-  var apellido = document.querySelector("#txtApellidos").value;
-  var telefono = document.querySelector("#txtTelefono").value;
-  $.ajax({
-    url: "http:///moralo.atwebpages.com/menuAjax/clientes/insertarClientes.php",
-    type: "POST",
-    data: {
-      dni: dni,
-      nombre: nombre,
-      apellido: apellido,
-      telefono: telefono,
-    },
-  });
 
-  // Limpiar los campos del modal después de la inserción
-  document.querySelector("#txtDni").value = "";
-  document.querySelector("#txtNombre").value = "";
-  document.querySelector("#txtApellidos").value = "";
-  document.querySelector("#txtTelefono").value = "";
-}
-function modificar(dni, nombre, apellido, telefono) {
-  console.log("entro en modificar clientes");
-  var dni = document.querySelector("#txtDni").value;
-  var nombre = document.querySelector("#txtNombre").value;
-  var apellido = document.querySelector("#txtApellidos").value;
-  var telefono = document.querySelector("#txtTelefono").value;
+function insertarUsuario() {
+  console.log("entro en insertar");
+  let dniTxt = document.querySelector("#txtDni").value;
+  let nombreTxt = document.querySelector("#txtNombre").value;
+  let apellidoTxt = document.querySelector("#txtApellido").value;
+  let telefonoTxt = document.querySelector("#txtTelefono").value;
+  console.log("insertando: " + dniTxt);
   $.ajax({
-    url: "http:///moralo.atwebpages.com/menuAjax/clientes/modificarClientes.php",
+    url: "http://moralo.atwebpages.com/menuAjax/clientes/insertarClientes.php",
     type: "POST",
     data: {
-      dni: dni,
-      nombre: nombre,
-      apellido: apellido,
-      telefono: telefono,
+      // sintaxis: variablePHP : variableJs
+      dni: dniTxt,
+      nombre: nombreTxt,
+      apellido: apellidoTxt,
+      telefono: telefonoTxt,
     },
+    dataType: "JSON",
   });
+  location.reload();
 }
 function eliminar(dni) {
-  console.log("entro en eliminar clientes");
-  var dni = document.querySelector("#txtDni").value;
-  $.ajax({
-    url: "http:///moralo.atwebpages.com/menuAjax/clientes/eliminarClientes.php",
-    type: "POST",
-    data: {
-      dni: dni,
-    },
-  });
+  console.log("entro en eliminar " + dni);
+  let respuesta = confirm("¿Estás seguro de querer eliminar " + dni + "?");
+  //cargar el método AJAX que ejecuta el servicio eliminar.php
+  if (respuesta) {
+    $.ajax({
+      //url del servicio
+      url: "http://moralo.atwebpages.com/menuAjax/clientes/eliminarClientes.php",
+      //method
+      type: "POST",
+      data: {
+        dni: dni,
+      },
+      dataType: "JSON",
+    });
+    location.reload();
+  }
+}
+function modificar(vector) {
+  console.log("entro en modificar " + vector);
+  let cadena = String(vector);
+  let deserializar = cadena.split(",");
+  document.querySelector("#txtDni").value = deserializar[0];
+  document.querySelector("#txtDni").setAttribute("disabled", true);
+  document.querySelector("#txtNombre").value = deserializar[1];
+  document.querySelector("#txtApellido").value = deserializar[2];
+  document.querySelector("#txtTelefono").value = deserializar[3];
+  console.log("dni :" + deserializar[0]);
+  document.querySelector("#btnInsertar").disabled = true;
+
+  document.querySelector("#btnModificar").disabled = false;
+
+  $("#formclientesModal").modal("show");
+  document
+    .querySelector("#btnModificar")
+    .addEventListener("click", accionAjaxModificar);
+
+  function accionAjaxModificar() {
+    let dniTxt = document.querySelector("#txtDni").value;
+    let nombreTxt = document.querySelector("#txtNombre").value;
+    let apellidoTxt = document.querySelector("#txtApellido").value;
+    let telefonoTxt = document.querySelector("#txtTelefono").value;
+    $.ajax({
+      url: "http://moralo.atwebpages.com/menuAjax/clientes/modificarClientes.php",
+      type: "POST",
+      data: {
+        dni: dniTxt,
+        nombre: nombreTxt,
+        apellido: apellidoTxt,
+        telefono: telefonoTxt,
+      },
+      dataType: "JSON",
+    });
+  }
 }
