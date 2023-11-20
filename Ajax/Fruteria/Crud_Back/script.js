@@ -1,0 +1,140 @@
+window.onload = inicio;
+var tabla = document.querySelector("#cajaTabla");
+var bloqueHtml = document.createElement("div");
+
+function inicio() {
+  let elemento = document.querySelector("#btnInsertar");
+  elemento.addEventListener("click", insertarUsuario);
+
+  cargarTabla();
+}
+function cargarTabla() {
+  console.log("entro en cargarTabla");
+
+  bloqueHtml.innerHTML =
+    "<div class='row'>" +
+    "<div class='col-lg-2 text-center' >id</div>" +
+    "<div class='col-lg-2 text-center' >name</div>" +
+    "<div class='col-lg-2 text-center' >price</div>" +
+    "<div class='col-lg-2 text-center' >photo</div>" +
+    "<div class='col-lg-2 text-center' >ELIMINAR</div>" +
+    "<div class='col-lg-2 text-center' >MODIFICAR</div></div>";
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function () {
+    //CONTROL DE ESTADO DE LA PETICIÓN DE DATOS Y DEL ESTADO DEL SERVIDOR
+    if (this.readyState == 4 && this.status == 200) {
+      //he accedido al fichero de datos y está abierto el servidor
+      //tengo que averiguar en qué formato me llegan los datos para hacer el parseo
+      var objeto = JSON.parse(this.responseText);
+
+      objeto.forEach(recorrer);
+
+      function recorrer(fruta, index) {
+        console.log("vector" + fruta.id);
+        let vector = [fruta.id, fruta.name, fruta.price, fruta.photo];
+        bloqueHtml.innerHTML +=
+          "<div class='row'> " +
+          "<div class='col-lg-2 text-center'>" +
+          fruta.id +
+          "</div>" +
+          "<div class='col-lg-2 text-center'>" +
+          fruta.name +
+          "</div>" +
+          "<div class='col-lg-2 text-center'>" +
+          fruta.price +
+          "</div>" +
+          "<div class='col-lg-2 text-center'>" +
+          "<img src='" +
+          fruta.photo +
+          "' height='100' width='100'>" +
+          "</div>" +
+          //simular botón con a href añado clase btn btn-danger (color rojo)
+          "<div class='col-lg-2 text-center mb-2'><a class='btn btn-danger btn-md'" +
+          //anulo el href, no hay link , pero sí hay evento onclick con
+          //parámetro incluido: id de esa tupla
+          " href='javascript:void(0)' onclick=eliminar('" +
+          fruta.id +
+          "')>" +
+          //texto del botón e icono
+          "ELIMINAR<i class='bi-trash'></i></a></div> " +
+          //td del modificar
+          "<div class='col-lg-2 text-center'><a class='btn btn-info btn-md' " +
+          "href='javascript:void(0)' onclick=modificar('" +
+          vector +
+          "')>" +
+          "MODIFICAR<i class='bi bi-arrow-clockwise'></i></a></div>";
+      }
+    }
+  };
+  //PRIMERO HAY QUE HACER LA PETICIÓN
+  xhr.open(
+    "GET",
+    " http://moralo.atwebpages.com/menuAjax/productos/index.php",
+    true
+  );
+  xhr.send();
+
+  tabla.appendChild(bloqueHtml);
+}
+
+function insertarUsuario() {
+  console.log("entro en insertar");
+  let idTxt = document.querySelector("#txtId").value;
+  let nameTxt = document.querySelector("#txtName").value;
+  let priceTxt = document.querySelector("#txtPrice").value;
+  let photoTxt = document.querySelector("#txtPhoto").value;
+  console.log("insertando: " + idTxt);
+  $.ajax({
+    url: "http://moralo.atwebpages.com/menuAjax/fruta/insertarfruta.php",
+    type: "POST",
+    data: {
+      // sintaxis: variablePHP : variableJs
+      id: idTxt,
+      name: nameTxt,
+      price: priceTxt,
+      photo: photoTxt,
+    },
+    dataType: "JSON",
+  });
+  location.reload();
+}
+function eliminar(id) {
+  console.log("entro en eliminar " + id);
+  let respuesta = confirm("¿Estás seguro de querer eliminar " + id + "?");
+  //cargar el método AJAX que ejecuta el servicio eliminar.php
+  if (respuesta) {
+    $.ajax({
+      //url del servicio
+      url: "http://moralo.atwebpages.com/menuAjax/fruta/eliminarfruta.php",
+      //method
+      type: "POST",
+      data: {
+        id: id,
+      },
+      dataType: "JSON",
+    });
+    location.reload();
+  }
+}
+function modificar(vector) {
+  console.log("entro en modificar " + vector);
+  let cadena = String(vector);
+  let deserializar = cadena.split(",");
+  document.querySelector("#txtid").value = deserializar[0];
+  document.querySelector("#txtid").setAttribute("disabled", true);
+  document.querySelector("#txtname").value = deserializar[1];
+  document.querySelector("#txtprice").value = deserializar[2];
+  document.querySelector("#txtphoto").value = deserializar[3];
+  console.log("id :" + deserializar[0]);
+  document.querySelector("#btnInsertar").disabled = true;
+
+  document.querySelector("#btnModificar").disabled = false;
+
+  $("#formfrutaModal").modal("show");
+  document
+    .querySelector("#btnModificar")
+    .addEventListener("click", accionAjaxModificar);
+  function accionAjaxModificar() {
+    console.log("modficar");
+  }
+}
