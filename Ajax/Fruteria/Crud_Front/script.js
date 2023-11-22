@@ -17,12 +17,15 @@ let btnEnviarM = document.getElementById("enviarMail");
 btnEnviarM.onclick = enviarMail;
 btnGestionAl.onclick = login;
 
+let vectorGlobal = [];
+
 function inicio() {
   cargarContenido();
   console.log(objeto);
 }
 
 function mostrarPDF() {
+  actualizarAlmacen();
   let ticket1 = document.getElementById("cestaCompra").innerHTML;
   console.log(ticket1);
 
@@ -46,6 +49,8 @@ function mostrarPDF() {
   win.print();
 }
 
+function actualizarAlmacen() {}
+
 //ltzo vyev gqif ndso
 
 function enviarMail() {
@@ -53,7 +58,7 @@ function enviarMail() {
   Email.send({
     Host: "smtp.gmail.com",
     Username: "rblazquezi02@educarex.es",
-    Password: "ltzovyevgqifndso",
+    Password: "",
     To: "profeaugustobriga@gmail.com",
     From: "rblazquezi02@educarex.es",
     Subject: "Enviar mail usuario JS",
@@ -114,6 +119,8 @@ function anadirCesta(vector) {
   let vectorX = vector.split(",");
   let peso = prompt("Teclea los kgs de " + vectorX[1]);
   calculoPrecio = peso * parseFloat(vectorX[3]);
+  vectorGlobal.push(vector);
+
   total = total + calculoPrecio;
   precioTotal.textContent = total;
 
@@ -131,19 +138,42 @@ function anadirCesta(vector) {
       "<td>" +
       "<div class='col-lg-2 text-center mb-2'><a class='btn btn-danger btn-md'" +
       " href='javascript:void(0)' onclick=eliminar(this,'" +
+      vectorX[1] +
       calculoPrecio +
+      peso +
       "')>" +
       "ELIMINAR<i class='bi-trash'></i></a></div>" +
       "</td>";
+
+    $.ajax({
+      url: "http://moralo.atwebpages.com/menuAjax/productos3/actualizarAlmacen.php",
+      type: "POST",
+      data: {
+        // sintaxis: variablePHP : variableJs
+        id: vectorX[0],
+        kgs: peso,
+      },
+      dataType: "JSON",
+    });
   }
   contenedorCesta.appendChild(cajaTr);
 }
 
-function eliminar(fila, calculo) {
+function eliminar(fila, id, calculo, peso) {
   let filaTabla = fila.parentNode.parentNode.parentNode;
   filaTabla.innerHTML = "";
   total = total - calculo;
   precioTotal.textContent = total;
+  $.ajax({
+    url: "http://moralo.atwebpages.com/menuAjax/productos3/retornarAlmacen.php",
+    type: "POST",
+    data: {
+      // sintaxis: variablePHP : variableJs
+      id: id,
+      kgs: peso,
+    },
+    dataType: "JSON",
+  });
 }
 
 function login() {

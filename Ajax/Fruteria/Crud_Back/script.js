@@ -69,7 +69,7 @@ function cargarTabla() {
   //PRIMERO HAY QUE HACER LA PETICIÓN
   xhr.open(
     "GET",
-    " http://moralo.atwebpages.com/menuAjax/productos/index.php",
+    " http://moralo.atwebpages.com/menuAjax/productos3/getProductos.php",
     true
   );
   xhr.send();
@@ -85,7 +85,7 @@ function insertarUsuario() {
   let photoTxt = document.querySelector("#txtPhoto").value;
   console.log("insertando: " + idTxt);
   $.ajax({
-    url: "http://moralo.atwebpages.com/menuAjax/fruta/insertarfruta.php",
+    url: "http://moralo.atwebpages.com/menuAjax/productos3/insertarProductos.php",
     type: "POST",
     data: {
       // sintaxis: variablePHP : variableJs
@@ -105,7 +105,7 @@ function eliminar(id) {
   if (respuesta) {
     $.ajax({
       //url del servicio
-      url: "http://moralo.atwebpages.com/menuAjax/fruta/eliminarfruta.php",
+      url: "http://moralo.atwebpages.com/menuAjax/productos3/eliminarProductos.php",
       //method
       type: "POST",
       data: {
@@ -120,21 +120,37 @@ function modificar(vector) {
   console.log("entro en modificar " + vector);
   let cadena = String(vector);
   let deserializar = cadena.split(",");
-  document.querySelector("#txtid").value = deserializar[0];
-  document.querySelector("#txtid").setAttribute("disabled", true);
-  document.querySelector("#txtname").value = deserializar[1];
-  document.querySelector("#txtprice").value = deserializar[2];
-  document.querySelector("#txtphoto").value = deserializar[3];
-  console.log("id :" + deserializar[0]);
+  document.querySelector("#txtId").value = deserializar[0];
+  document.querySelector("#txtId").setAttribute("disabled", true);
+  document.querySelector("#txtName").value = deserializar[1];
+  document.querySelector("#txtPrice").value = deserializar[2];
+  document.querySelector("#txtPhoto").value = deserializar[3];
+  console.log("id: " + deserializar[0]);
   document.querySelector("#btnInsertar").disabled = true;
 
   document.querySelector("#btnModificar").disabled = false;
 
-  $("#formfrutaModal").modal("show");
+  $("#formfrutasModal").modal("show");
   document
     .querySelector("#btnModificar")
     .addEventListener("click", accionAjaxModificar);
   function accionAjaxModificar() {
-    console.log("modficar");
+    let idTxt = document.querySelector("#txtId").value;
+    let nameTxt = document.querySelector("#txtName").value;
+    let priceTxt = document.querySelector("#txtPrice").value;
+    let photoTxt = document.querySelector("#txtPhoto").value;
+    $.ajax({
+      url: "http://moralo.atwebpages.com/menuAjax/productos3/modificarProductos.php",
+      method: "POST",
+      data: {
+        // sintaxis: variablePHP : variableJs
+        id: idTxt,
+        name: nameTxt,
+        price: priceTxt,
+        photo: photoTxt,
+      },
+      dataType: "JSON",
+    });
+    location.reload();
   }
 }
